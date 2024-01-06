@@ -1,5 +1,5 @@
-const Task=require('../models/Task')
-const getAllTasks=async (req,res)=>{
+import Task from '../models/Task.js'
+export const getAllTasks=async (req,res)=>{
     try{
         const tasks= await Task.find({})
         res.status(200).json({tasks:tasks})
@@ -8,7 +8,7 @@ const getAllTasks=async (req,res)=>{
         res.status(500).json({msg:error})
     }
 }
-const  createTask= async  (req,res)=>{
+export const  createTask= async  (req,res)=>{
     try{
         const task=await Task.create(req.body)
         res.status(201).json({task});
@@ -17,7 +17,7 @@ const  createTask= async  (req,res)=>{
         res.status(500).json({msg:error})
     }
 }
-const  getTask= async (req,res)=>{
+export const  getTask= async (req,res)=>{
     try{
         const {id:taskID}=req.params
         const task=await Task.findOne({_id:taskID})
@@ -33,7 +33,7 @@ const  getTask= async (req,res)=>{
     }
 }
 
-const  deleteTask= async (req,res)=>{
+export const  deleteTask= async (req,res)=>{
     try{
         const {id:taskID}=req.params
         const task =await Task.findOneAndDelete({_id:taskID});
@@ -48,7 +48,7 @@ const  deleteTask= async (req,res)=>{
     catch(error){
         res.status(500).json({msg:error})
     }}
-    const  updateTask= async (req,res)=>{
+   export  const  updateTask= async (req,res)=>{
         try{
             const {id:taskID}=req.params;
             const task= await Task.findByIdAndUpdate({_id:taskID},req.body,{new:true,
@@ -62,7 +62,7 @@ const  deleteTask= async (req,res)=>{
             res.status(500).json({msg:error})
         }
     }
-module.exports={
+export default {
     getAllTasks,createTask,getTask,updateTask,deleteTask
     
 }

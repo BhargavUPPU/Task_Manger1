@@ -1,18 +1,21 @@
-const connectDB=require('./db/connect')
-require('dotenv').config();
-const await=require('await')
-const express=require('express');
+import {connectDB} from './db/connect.js';
+import express, {  json } from 'express';
+import dotenv from 'dotenv'
+import serverless from 'serverless-http' 
 const  app=express();
-const tasks=require('./rotues/tasks');
+import mongoose from 'mongoose';
+import tasks from './rotues/tasks.js';
 //middle ware
 app.use(express.static('./public'));
-app.use(express.json())
+app.use(json())
+dotenv.config()
 //routes
- app.use('/api/v1/task',tasks)
+ app.use('/.netlify/function/api',tasks)
+    connectDB("mongodb+srv://bhargavsai:bhargav@cluster0.5g1v0ts.mongodb.net/Cluster0?retryWrites=true&w=majority")
 const port=5000
 const start=async()=>{
     try{
-        await connectDB(process.env.MONGO_URI)
+         
         app.listen(port,console.log(`Server is listening on port ${port}`))
     }
     catch(error){
@@ -20,3 +23,4 @@ const start=async()=>{
     }
 }
 start();
+module.exports.handler=serverless(app)
